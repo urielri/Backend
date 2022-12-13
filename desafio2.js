@@ -3,7 +3,7 @@ const path = require("path");
 
 class ProductManager {
   constructor() {
-    this.users = [];
+
     this.file = path.join(__dirname, "products.json");
   }
   async getProdutcs() {
