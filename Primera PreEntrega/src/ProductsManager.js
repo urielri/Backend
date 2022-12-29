@@ -8,10 +8,9 @@ class ProductsManager {
     async getAll() {
         try {
             const data = await fs.promises.readFile(this.filePath);
-            console.log(data + 'asd');
             return JSON.parse(data);
         } catch (err) {
-            throw err;
+            console.log(err);
         }
     }
 
@@ -85,13 +84,5 @@ class ProductsManager {
         }
     }
 }
-
-let producto = new ProductsManager();
-
-async function ejecution() {
-    await producto.getAll();
-}
-
-ejecution();
 
 export { ProductsManager };

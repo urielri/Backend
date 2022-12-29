@@ -17,6 +17,7 @@ productRouter.get("/", async (req, res) => {
     try {
         const products = await productsManager.getAll();
 
+
         if (limit) {
             res.send(products.slice(0, limit));
             return;
@@ -33,7 +34,8 @@ productRouter.get("/:pid", async (req, res) => {
     try {
         const products = await productsManager.getAll();
 
-        const product = products.find((product) => product.id === pid);
+        const product = products.find((product) => product.id === Number(pid));
+        console.log(product)
         if (!product) {
             res.status(400).send("Producto no encontrado");
             return;
@@ -51,8 +53,8 @@ productRouter.post("/", async (req, res) => {
     };
 
     try {
-        const products = await ProductsManager.getAll();
-        await ProductsManager.writeAll([...products, newProduct]);
+        const products = await productsManager.getAll();
+        await productsManager.writeAll([...products, newProduct]);
         res.send(newProduct);
     } catch (err) {
         res.status(500).send(err.message);
@@ -64,34 +66,34 @@ productRouter.put("/:pid", async (req, res) => {
     const newProduct = req.body;
 
     try {
-        const products = await ProductsManager.getAll();
-        const productIndex = products.findindex((product) => product.id === pid);
+        const products = await productsManager.getAll();
+        const productIndex = products.findIndex((product) => product.id === Number(pid));
         if (productIndex === -1) {
             res.status(400).send("Producto no encontrado");
             return;
         }
 
         products[productIndex] = newProduct;
-        await ProductsManager.writeAll(products);
+        await productsManager.writeAll(products);
         res.send(newProduct);
     } catch (err) {
         res.status(500).send(err.message);
     }
 })
 
-productRouter.delete("/pid", async (req, res) => {
+productRouter.delete("/:pid", async (req, res) => {
     const { pid } = req.params;
 
     try {
-        const products = await ProductsManager.getAll();
-        const productIndex = products.findindex((product) => product.id === pid);
+        const products = await productsManager.getAll();
+        const productIndex = products.findIndex((product) => product.id === Number(pid));
         if (productIndex === -1) {
             res.status(400).send("Producto no encontrado");
             return;
         }
 
         products.splice(productIndex, 1);
-        await ProductsManager.writeAll(products);
+        await productsManager.writeAll(products);
         res.send("Producto eliminado");
     } catch (err) {
         res.status(500).send(err.message);
